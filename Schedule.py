@@ -14,16 +14,17 @@ class Schedule:
         for i in range(class_number*total_days):
             a = []
             for ii in range(lessons_a_day):
-                a.append((0,0)) # lesson teacher
+                a.append((-1,-1)) # lesson teacher
             self.Schedule_list.append(a)
             
+    # print the schedule
     def p(self):
         for i in self.Schedule_list:
             for ii in i:
                 print(ii, end="||")
             print('\n')
             
-            
+    
     # input an assignment and modify the list
     def set(self, a):
         d, s, c, l, t = a.day, a.section, a.Class, a.lesson, a.teacher
@@ -36,9 +37,28 @@ class Schedule:
     def score(self):
         result = 0
         for i in Constraint.constraint_function_list:
-            result += i.check(self)
+            result += i(self)
         return result
+    
+    # how many lessons do a teacher take a day
+    def numOfClassOfTeaOneDay(self, teacher, day):
+        count = 0
+        for i in range(self.class_number):
+            index = i + day*self.class_number
+            for ii in self.Schedule_list[index]:
+                if ii[0] != -1 and ii[1] != -1 and ii[1] == teacher:
+                    count += 1
+        return count
+    
+    # how many lessons do a teacher take a week
+    def numOfClassOfTeaOneWeek(self, teacher):
+        count = 0
+        for i in range(self.total_days):
+            count += self.numOfClassOfTeaOneDay(teacher, i)
+        return count
     
 if __name__ == '__main__':
     s = Schedule(5, 7, 2, 3, 6)
+    s.set(A.Assignment(0,0,0,0,0))
     s.p()
+    print(s.score())

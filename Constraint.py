@@ -26,14 +26,28 @@ def addf(function):
 @addf
 def contraint1(schedule):
     '''
-    check wether every teacher's class is satisfied
+    check wether every teacher's week class is satisfied
     '''
     reward = 0
     for i in range(schedule.teacher_number):
-        count = 0
-        for x in schedule.Schedule_list:
-            for y in x:
-                if y[1] == i:
-                    count += 1
+        count = schedule.numOfClassOfTeaOneWeek(i)
         if count >= constraint_condition["min_one_teacher_week_lesson"] and count <= constraint_condition["max_one_teacher_week_lesson"]:
             reward += 1
+        else:
+            reward -= 1
+    return reward        
+            
+@addf
+def contraint2(schedule):
+    '''
+    check wether every teacher's day class is satisfied
+    '''
+    reward = 0
+    for i in range(schedule.teacher_number):
+        for ii in range(schedule.total_days):
+            count = schedule.numOfClassOfTeaOneDay(i, ii)
+            if count >= constraint_condition["min_one_teacher_day_lesson"] and count <= constraint_condition["max_one_teacher_day_lesson"]:
+                reward += 1
+            else:
+                reward -= 1
+    return reward  
