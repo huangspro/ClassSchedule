@@ -1,4 +1,5 @@
-import Assignment.Assignment as A
+import Assignment as A
+import Constraint
 
 # a schedule is a matrix, shaping (row:lessons_a_day, col:class_number*total_days)
 class Schedule:
@@ -10,31 +11,34 @@ class Schedule:
         self.teacher_number = teacher_number
         
         self.Schedule_list = []
-        for i in range(lessons_a_day):
+        for i in range(class_number*total_days):
             a = []
-            for ii in range(class_number*total_days):
-                a.append({"class":0, "lesson":0, "teacher":0})
+            for ii in range(lessons_a_day):
+                a.append((0,0)) # lesson teacher
             self.Schedule_list.append(a)
             
-    def __str__(self):
+    def p(self):
         for i in self.Schedule_list:
             for ii in i:
-                print(i, end=" ")
+                print(ii, end="||")
             print('\n')
             
             
     # input an assignment and modify the list
     def set(self, a):
         d, s, c, l, t = a.day, a.section, a.Class, a.lesson, a.teacher
-        if(d>=self.total_days or s>=self.lessons_a_day or c>self.class_number or l>self.kind_of_lesson or t>self.r):
+        if(d>=self.total_days or s>=self.lessons_a_day or c>self.class_number or l>self.kind_of_lesson or t>self.teacher_number):
             return False
-        self.Schedule_list[day][section] = {"class":c, "lesson":l, "teacher":t}
+        self.Schedule_list[d*self.class_number + c][s] = (l, t)
         return True
     
     # there are many constraints for a schedule
     def score(self):
-        
+        result = 0
+        for i in Constraint.constraint_function_list:
+            result += i.check(self)
+        return result
     
 if __name__ == '__main__':
-    s = Schedule(5, 7, 6, 3)
-    print(str(s))
+    s = Schedule(5, 7, 2, 3, 6)
+    s.p()
