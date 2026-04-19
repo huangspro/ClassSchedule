@@ -18,7 +18,9 @@ The environment is based on 3 components: Schedule.py, Assignment.py, Constraint
 
 from Assignment import Assignment
 from Schedule import Schedule
+import torch
 import Constraint
+import os
 
 class Environment:
     def __init__(self, total_days, lessons_a_day, class_number, kind_of_lesson, teacher_number):
@@ -33,12 +35,14 @@ class Environment:
         assignment = Assignment(*list_of_arguments)
         self.schedule.set(assignment)
         # return new_observation, reward
-        return self.schedule.observe(), self.schedule.score()
+        return torch.tensor(self.schedule.observe(), dtype=torch.float32).flatten(), self.schedule.score()
         
     def reset(self):
         self.schedule = Schedule(self.total_days, self.lessons_a_day, self.class_number, self.kind_of_lesson, self.teacher_number)
+        return torch.tensor(self.schedule.observe(), dtype=torch.float32).flatten()
         
     def p(self):
+        os.system('clear')
         self.schedule.p();
         
 

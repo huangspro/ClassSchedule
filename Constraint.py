@@ -12,9 +12,9 @@ constraint_condition = {
     "min_one_teacher_week_lesson":5,
     
     "max_one_lesson_a_day":2,
-    "max_one_lesson_a_week":7,
+    "max_one_lesson_a_week":7*3,
     "min_one_lesson_a_day":1,
-    "min_one_lesson_a_week":5,
+    "min_one_lesson_a_week":5*3,
 }
 
 def addf(function):
