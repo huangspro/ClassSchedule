@@ -3,7 +3,7 @@ import pickle, random, os, numpy, torch
 import ale_py
 from torch.distributions.categorical import Categorical
 
-learning_ratio = 1e-4
+learning_ratio = 3e-5
 discounted = 0.99
 device = torch.device('cuda')
 
@@ -70,8 +70,8 @@ class AC(torch.nn.Module):
         action = [i.detach().item() for i in action]
         return action, prob, entropy.detach(), C
         
-AC_model = AC(class_number, total_days, lessons_a_day).to(device)
-#AC_model = torch.load("model/model.pth", weights_only=False).to(device)
+#AC_model = AC(class_number, total_days, lessons_a_day).to(device)
+AC_model = torch.load("model/model.pth", weights_only=False).to(device)
 optimizer = torch.optim.Adam(AC_model.parameters(), lr=learning_ratio)
 
 
@@ -99,6 +99,7 @@ def collect(number_of_states):
 
         # get reward, done
         next_observation, reward = env.step(actions[i])
+        env.p()
         rewards[i] = torch.tensor(reward, dtype=torch.float32).to(device)
         
         observation = next_observation.to(device)
@@ -144,7 +145,7 @@ def train(collection):
         #print(f"\t {k}, Loss: {Loss}")
         
         torch.save(AC_model, "model/model.pth")
-for i in range(10):
+for i in range(1):
     collection = collect(500)
     print("frames: ", collection[0])
     print("reward: ", sum(collection[2]).item())
