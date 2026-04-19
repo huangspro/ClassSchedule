@@ -1,4 +1,4 @@
-import Assignment as A
+import Assignment
 import Constraint
 
 # a schedule is a matrix, shaping (row:lessons_a_day, col:class_number*total_days)
@@ -14,7 +14,7 @@ class Schedule:
         for i in range(class_number*total_days):
             a = []
             for ii in range(lessons_a_day):
-                a.append((-1,-1)) # lesson teacher
+                a.append([-1,-1]) # lesson teacher
             self.Schedule_list.append(a)
             
     # print the schedule
@@ -40,6 +40,10 @@ class Schedule:
             result += i(self)
         return result
     
+    # create observation in list form, the observation shape: (class_number*total_days, lessons_a_day, 2)
+    def observe(self):
+        return self.Schedule_list
+    
     # how many lessons do a teacher take a day
     def numOfClassOfTeaOneDay(self, teacher, day):
         count = 0
@@ -57,6 +61,23 @@ class Schedule:
             count += self.numOfClassOfTeaOneDay(teacher, i)
         return count
     
+    # how many lessons do a subject have a week
+    def numOfClassOfSubOneDay(self, lesson, day):
+        count = 0
+        for i in range(self.class_number):
+            index = i + day*self.class_number
+            for ii in self.Schedule_list[index]:
+                if ii[0] != -1 and ii[1] != -1 and ii[0] == lesson:
+                    count += 1
+        return count
+        
+    # how many lessons do a subject have a day
+    def numOfClassOfSubOneWeek(self, lesson):
+        count = 0
+        for i in range(self.total_days):
+            count += self.numOfClassOfSubOneDay(lesson, i)
+        return count
+        
 if __name__ == '__main__':
     s = Schedule(5, 7, 2, 3, 6)
     s.set(A.Assignment(0,0,0,0,0))

@@ -51,3 +51,32 @@ def contraint2(schedule):
             else:
                 reward -= 1
     return reward  
+    
+@addf
+def contraint3(schedule):
+    '''
+    check wether every lesson's week class is satisfied
+    '''
+    reward = 0
+    for i in range(schedule.kind_of_lesson):
+        count = schedule.numOfClassOfSubOneWeek(i)
+        if count >= constraint_condition["min_one_lesson_a_week"] and count <= constraint_condition["max_one_lesson_a_week"]:
+            reward += 1
+        else:
+            reward -= 1
+    return reward        
+            
+@addf
+def contraint4(schedule):
+    '''
+    check wether every lesson's day class is satisfied
+    '''
+    reward = 0
+    for i in range(schedule.kind_of_lesson):
+        for ii in range(schedule.total_days):
+            count = schedule.numOfClassOfSubOneDay(i, ii)
+            if count >= constraint_condition["min_one_lesson_a_day"] and count <= constraint_condition["max_one_lesson_a_day"]:
+                reward += 1
+            else:
+                reward -= 1
+    return reward 
