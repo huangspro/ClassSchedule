@@ -33,7 +33,18 @@ class Environment:
         assignment = Assignment(*list_of_arguments)
         self.schedule.set(assignment)
         # return new_observation, reward
-        return self.observe(), self.schedule.score()
+        return self.schedule.observe(), self.schedule.score()
         
     def reset(self):
-        self.schedule = Schedule(total_days, lessons_a_day, class_number, kind_of_lesson, teacher_number)
+        self.schedule = Schedule(self.total_days, self.lessons_a_day, self.class_number, self.kind_of_lesson, self.teacher_number)
+        
+    def p(self):
+        self.schedule.p();
+        
+if __name__ == "__main__":
+    env = Environment(5, 7, 2, 6, 6)
+    env.p()
+    a,b = env.step([0,0,0,0,0])
+    print(a)
+    env.reset()
+    env.p()

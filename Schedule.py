@@ -30,7 +30,7 @@ class Schedule:
         d, s, c, l, t = a.day, a.section, a.Class, a.lesson, a.teacher
         if(d>=self.total_days or s>=self.lessons_a_day or c>self.class_number or l>self.kind_of_lesson or t>self.teacher_number):
             return False
-        self.Schedule_list[d*self.class_number + c][s] = (l, t)
+        self.Schedule_list[d*self.class_number + c][s] = [l, t]
         return True
     
     # there are many constraints for a schedule
@@ -78,8 +78,4 @@ class Schedule:
             count += self.numOfClassOfSubOneDay(lesson, i)
         return count
         
-if __name__ == '__main__':
-    s = Schedule(5, 7, 2, 3, 6)
-    s.set(A.Assignment(0,0,0,0,0))
-    s.p()
-    print(s.score())
+
