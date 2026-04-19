@@ -3,4 +3,5 @@ We use the environment that defined by myself, possessing the step() and reset()
 We use ppo to learn descrete actions(assignments)
 
 For each observation, we only show the schedule table to the agent, and the root information like teacher number and how many days a week are hidden.
-for its too completed to train an agent with dynamic environment created from dynamic information
+for its too completed to train an agent with dynamic environment created from dynamic information.
+In another word, for each specific type of school, we train a specific agent.
