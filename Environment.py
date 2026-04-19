@@ -41,10 +41,4 @@ class Environment:
     def p(self):
         self.schedule.p();
         
-if __name__ == "__main__":
-    env = Environment(5, 7, 2, 6, 6)
-    env.p()
-    a,b = env.step([0,0,0,0,0])
-    print(a)
-    env.reset()
-    env.p()
+
